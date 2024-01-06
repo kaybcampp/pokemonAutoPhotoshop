@@ -1,48 +1,75 @@
-// Ensure Fabric.js is loaded before this script
+document.addEventListener('DOMContentLoaded', function () {
+    const headInput = document.getElementById('headInput');
+    const bodyInput = document.getElementById('bodyInput');
+    const displayContainer = document.getElementById('displayContainer');
 
-const pokemonCanvas = new fabric.Canvas('pokemonCanvas');
-const sneakerCanvas = new fabric.Canvas('sneakerCanvas');
+    const pokemonList = [
+        'bulbasaur', 'ivysaur', 'venusaur',
+        'charmander', 'charmeleon', 'charizard',
+        'squirtle', 'wartortle', 'blastoise',
+        'caterpie', 'metapod', 'butterfree',
+        'weedle', 'kakuna', 'beedrill',
+        'pidgey', 'pidgeotto', 'pidgeot',
+        'rattata', 'raticate', 'spearow', 'fearow',
+        'ekans', 'arbok',
+        'pikachu', 'raichu',
+        'sandshrew', 'sandslash',
+        'nidoranf', 'nidorina', 'nidoqueen',
+        'nidoranm', 'nidorino', 'nidoking',
+        'clefairy', 'clefable',
+        'vulpix', 'ninetails',
+        'jigglypuff', 'wigglytuff'
+    ];
 
-// Function to load and customize Pokemon and Sneaker images
-function customizePokemon(pokemonImageSrc, sneakerImageSrc, type) {
-    fabric.Image.fromURL(pokemonImageSrc, (pokemon) => {
-        fabric.Image.fromURL(sneakerImageSrc, (sneaker) => {
-            // Add logic for color matching based on type
-            const colorMatch = getColorMatch(type);
+    function fetchAndDisplayPokemon(headName, bodyName) {
+        const headNumber = pokemonList.indexOf(headName) + 1;
 
-            // Apply color matching (example: recolor the sneaker)
-            sneaker.filters.push(
-                new fabric.Image.filters.BlendColor({
-                    color: colorMatch,
-                    mode: 'tint'
-                })
-            );
-            sneaker.applyFilters();
+        // If only 'head' is entered, set 'body' to the same as 'head'
+        const bodyNumber = bodyName ? pokemonList.indexOf(bodyName) + 1 : headNumber;
 
-            // Position and scale the sneaker image on the Pokemon
-            sneaker.scaleToWidth(pokemon.width * 0.7);
-            sneaker.set('left', pokemon.width * 0.2);
-            sneaker.set('top', pokemon.height * 0.6);
+        const fusionPageUrl = `https://if.daena.me/${headNumber}.${bodyNumber}/`;
 
-            // Add Pokemon and Sneaker to canvases
-            pokemonCanvas.clear().add(pokemon);
-            sneakerCanvas.clear().add(sneaker);
-        });
-    });
-}
+        console.log('Fetching Fusion Pokemon from:', fusionPageUrl);
 
-// Example color matching logic (you can replace this with your own logic)
-function getColorMatch(type) {
-    switch (type.toLowerCase()) {
-        case 'fire':
-            return '#FF4500'; // Example color for fire type
-        case 'water':
-            return '#4682B4'; // Example color for water type
-        // Add more cases for other types
-        default:
-            return '#000000'; // Default color
+        fetchPokemonImage(fusionPageUrl);
     }
-}
 
-// Example usage
-customizePokemon('pokemon.png', 'sneaker.png', 'fire');
+    function fetchPokemonImage(link) {
+        const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        const proxiedUrl = corsProxyUrl + link;
+
+        fetch(proxiedUrl)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const imageUrl = doc.querySelector('img').src;
+
+                console.log('Fetched Pokemon Image:', imageUrl);
+
+                // Display the image on the 'displayContainer' element
+                displayContainer.innerHTML = `<img src="${imageUrl}" alt="Fused Pokemon Image">`;
+            })
+            .catch(error => {
+                console.error('Error fetching Fusion Pokemon:', error.message);
+            });
+    }
+
+    // Fetch and display a default fusion when the page loads
+    fetchAndDisplayPokemon('bulbasaur', 'bulbasaur'); // Default: Head and Body both are Bulbasaur
+
+    // Handle Pokemon fusion search
+    function handleFusionSearch() {
+        const headName = headInput.value.trim().toLowerCase();
+        const bodyName = bodyInput.value.trim().toLowerCase();
+
+        // If only 'head' is entered, fetch and display that Pokemon without waiting for 'body'
+        if (pokemonList.includes(headName)) {
+            fetchAndDisplayPokemon(headName, bodyName);
+        }
+    }
+
+    // Set up event listeners for input changes
+    headInput.addEventListener('input', handleFusionSearch);
+    bodyInput.addEventListener('input', handleFusionSearch);
+});
