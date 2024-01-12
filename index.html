@@ -6,18 +6,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Your PokeDex App</title>
+    <style>
+        /* Additional styling for the drop-down list
+        .input-container {
+            position: relative;
+        }
+
+        input[list] {
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        datalist {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 200px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            display: none;
+        }
+
+        input:focus + datalist {
+            display: block;
+        }
+
+        /* Your existing styles go here */
+    </style>
 </head>
 
 <body>
     <div id="app">
         <div class="title">PokeDex</div>
-        <div id="displayContainer" class="display-container"></div>
+        <div id="displayContainer" class="display-container">
+            <img id="pokemonImage" alt="Pokémon Image">
+        </div>
         <div class="input-container">
-            <input type="text" id="headInput" placeholder="Enter Head Pokémon Name">
-            <input type="text" id="bodyInput" placeholder="Enter Body Pokémon Name">
+            <!-- Head Pokémon Input with Drop-down List -->
+            <input type="text" id="headInput" placeholder="Head of Pokémon" oninput="updatePokemonImage()" list="pokemonDatalist">
+
+            <!-- Body Pokémon Input with Drop-down List -->
+            <input type="text" id="bodyInput" placeholder="Body of Pokémon" oninput="updatePokemonImage()" list="pokemonDatalist">
+
+            <!-- Drop-down List -->
+            <datalist id="pokemonDatalist"></datalist>
         </div>
     </div>
+
     <script src="app.js"></script>
+    <script>
+        function updatePokemonImage() {
+            var headInput = document.getElementById("headInput").value.toLowerCase();
+            var bodyInput = document.getElementById("bodyInput").value.toLowerCase();
+
+            // If bodyInput is not provided, assume it's the same as headInput
+            var pokemonNumber = bodyInput ? bodyInput : headInput;
+
+            // Construct the direct image URL
+            var imageUrl = `https://cdn.daena.me/dknbPbaaNVIFxST3obtWnBx7/dn/pif/${pokemonNumber}.1.png`;
+
+            // Update the displayContainer with the fetched image
+            var pokemonImage = document.getElementById("pokemonImage");
+            pokemonImage.src = imageUrl;
+        }
+    </script>
 </body>
 
 </html>

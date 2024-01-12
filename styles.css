@@ -1,18 +1,43 @@
 body {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     height: 100vh;
     margin: 0;
+    background-color: #f0f0f0; /* Set your preferred background color */
 }
 
-.container {
+#app {
+    text-align: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.display-container {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* Darker shadow for a more defined look */
+    padding: 40px;
+    margin: 0 auto;
+    border-radius: 20px; /* Rounded corners for a square shape */
+    border: 1px solid #ccc; /* Thin border around the display container */
+}
+
+.input-container {
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    position: relative; /* Ensure relative positioning for absolute children */
 }
 
-.canvas {
-    width: 300px;
-    height: 300px;
-    border: 2px solid #000;
+input {
     margin: 10px;
+    padding: 10px;
+    border-radius: 10px; /* Rounded corners for the text boxes */
+    border: 1px solid #ccc; /* Thin border around the text boxes */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Shadow for the text boxes, matching the display shadow */
+    width: 200px;
 }
