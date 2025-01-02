@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enable CORS</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      border: 2px solid #333;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #333;
+    }
+    h1 {
+      margin-bottom: 1em;
+    }
+    p {
+      line-height: 1.5;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #fff;
+      color: #000;
+      font-size: 16px;
+      margin: 20px 10px 0;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    iframe {
+      display: block; /* Always displayed */
+      width: 80%;
+      height: 400px;
+      margin: 20px auto 0;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Enable CORS to Continue</h1>
+    <p>
+      This app requires temporary access to CORS Anywhere.<br>
+      Please <strong>“Request temporary access...”</strong> below,<br>
+      then click <strong>“I’ve Enabled CORS!”</strong> once you have granted permission.
+    </p>
+
+    <!-- The iframe for cors-anywhere demo -->
+    <iframe 
+      id="corsIframe" 
+      src="https://cors-anywhere.herokuapp.com/corsdemo"
+      title="CORS Demo">
+    </iframe>
+    
+    <!-- Button to confirm they've enabled CORS -->
+    <button id="corsEnabledBtn">I’ve Enabled CORS!</button>
+  </div>
+
+  <script>
+    const corsEnabledBtn = document.getElementById('corsEnabledBtn');
+
+    // Once they've enabled CORS, user clicks this button
+    corsEnabledBtn.addEventListener('click', function() {
+      // Redirect to your main page (index.html or whatever it's called)
+      window.location.href = 'index.html'; // <-- Replace with your main page filename
+    });
+  </script>
+</body>
+</html>
